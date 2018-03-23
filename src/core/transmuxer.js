@@ -60,6 +60,7 @@ class Transmuxer {
             ctl.on(TransmuxingEvents.LOADING_COMPLETE, this._onLoadingComplete.bind(this));
             ctl.on(TransmuxingEvents.RECOVERED_EARLY_EOF, this._onRecoveredEarlyEof.bind(this));
             ctl.on(TransmuxingEvents.MEDIA_INFO, this._onMediaInfo.bind(this));
+            ctl.on(TransmuxingEvents.CURRENT_TIME, this._onCurrentTime.bind(this));
             ctl.on(TransmuxingEvents.STATISTICS_INFO, this._onStatisticsInfo.bind(this));
             ctl.on(TransmuxingEvents.RECOMMEND_SEEKPOINT, this._onRecommendSeekpoint.bind(this));
         }
@@ -161,6 +162,12 @@ class Transmuxer {
     _onMediaInfo(mediaInfo) {
         Promise.resolve().then(() => {
             this._emitter.emit(TransmuxingEvents.MEDIA_INFO, mediaInfo);
+        });
+    }
+
+    _onCurrentTime(time) {
+        Promise.resolve().then(() => {
+            this._emitter.emit(TransmuxingEvents.CURRENT_TIME, time);
         });
     }
 

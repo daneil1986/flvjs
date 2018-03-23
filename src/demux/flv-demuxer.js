@@ -52,6 +52,7 @@ class FLVDemuxer {
 
         this._onError = null;
         this._onMediaInfo = null;
+        this._onCurrentTime = null;
         this._onTrackMetadata = null;
         this._onDataAvailable = null;
 
@@ -122,6 +123,7 @@ class FLVDemuxer {
 
         this._onError = null;
         this._onMediaInfo = null;
+        this._onCurrentTime = null;
         this._onTrackMetadata = null;
         this._onDataAvailable = null;
     }
@@ -173,6 +175,14 @@ class FLVDemuxer {
 
     set onMediaInfo(callback) {
         this._onMediaInfo = callback;
+    }
+
+    get onCurrentTime() {
+        return this._onCurrentTime;
+    }
+
+    set onCurrentTime(callback) {
+        this._onCurrentTime = callback;
     }
 
     // prototype: function(type: number, info: string): void
@@ -801,6 +811,8 @@ class FLVDemuxer {
             // Ignore all the video packets
             return;
         }
+
+        this._onCurrentTime(tagTimestamp);
 
         let spec = (new Uint8Array(arrayBuffer, dataOffset, dataSize))[0];
 

@@ -120,6 +120,12 @@ class FlvPlayer {
                     this._emitter.emit(PlayerEvents.STATISTICS_INFO, this.statisticsInfo);
                 });
             }
+        } else if (event === PlayerEvents.CURRENT_TIME) {
+            if (this._statisticsInfo != null) {
+                Promise.resolve().then(() => {
+                    this._emitter.emit(PlayerEvents.CURRENT_TIME, this.current_time);
+                });
+            }
         }
         this._emitter.addListener(event, listener);
     }
@@ -241,6 +247,11 @@ class FlvPlayer {
         this._transmuxer.on(TransmuxingEvents.MEDIA_INFO, (mediaInfo) => {
             this._mediaInfo = mediaInfo;
             this._emitter.emit(PlayerEvents.MEDIA_INFO, Object.assign({}, mediaInfo));
+        });
+
+        this._transmuxer.on(TransmuxingEvents.CURRENT_TIME, (time) => {
+            this.current_time = time;
+            this._emitter.emit(PlayerEvents.CURRENT_TIME, time);
         });
         this._transmuxer.on(TransmuxingEvents.STATISTICS_INFO, (statInfo) => {
             this._statisticsInfo = this._fillStatisticsInfo(statInfo);

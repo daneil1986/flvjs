@@ -265,6 +265,7 @@ class TransmuxingController {
 
             this._demuxer.onError = this._onDemuxException.bind(this);
             this._demuxer.onMediaInfo = this._onMediaInfo.bind(this);
+            this._demuxer._onCurrentTime = this._onCurrentTime.bind(this);
 
             this._remuxer.bindDataSource(this._demuxer
                          .bindDataSource(this._ioctl
@@ -286,6 +287,10 @@ class TransmuxingController {
         }
 
         return consumed;
+    }
+
+    _onCurrentTime(time) {
+        this._emitter.emit(TransmuxingEvents.CURRENT_TIME, time);
     }
 
     _onMediaInfo(mediaInfo) {
